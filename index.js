@@ -4,11 +4,16 @@ const app = express();
 
 
 // middleware
-var myLogger = function (req, res, next) {
-    console.log('before sending');
+var userPosts = function (req, res, next) {
+
+    
+    
     next();
 };
-app.use('/api/user/:id', myLogger);
+app.use('/api/user/:id', userPosts);
+
+
+app.use('/public', express.static('public'));
 
 
 

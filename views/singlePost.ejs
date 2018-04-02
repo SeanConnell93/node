@@ -1,0 +1,50 @@
+
+<%- include('./header.ejs'); %>
+
+  <div class="container">
+
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <a href="/">
+        <button class="btn">Home</button>
+      </a>
+    </div>
+  </div>
+
+
+<% if(singlePost) { %>
+
+  <div class="row">
+    <div class="col-md-10">
+      <h3 class="text-primary"><%= singlePost.title %></h3>
+      <h5>👱🏻 Post id: <%= singlePost.id %></h5>
+      <p><%= singlePost.body %></p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-10">
+      <h5>View all posts from this user</h5>
+      <a href=<%= 'user/' + singlePost.userId %>
+        <button class="btn btn-outline-primary">User Posts</button>
+      </a>
+    </div>
+  </div>
+
+
+<% } else { %>
+
+  <div class="row">
+    <div class="col-md-10">
+      <h1>Post not found 😭</h1>
+    </div>
+  </div>
+
+<% } %>
+
+</div>
+
+
+
+</body>
+</html>

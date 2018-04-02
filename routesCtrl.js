@@ -6,7 +6,8 @@ const path = require('path');
 const db = './db.json';
 
 
-function apiCtrl(req, res) {
+// all posts
+function allPostsCtrl(req, res) {
 	
 	// send back post number
 	if (req.params.post && Number(req.params.post) ) {
@@ -17,7 +18,14 @@ function apiCtrl(req, res) {
 
 			let singlePost = posts.find( post => post.id === Number(req.params.post));
 
-			res.send( singlePost !== undefined ? singlePost : 'Not Found' );
+			if ( isApi(req.path) ) {
+				res.send( singlePost !== undefined ? singlePost : 'Not Found' );
+				return;
+			}
+
+			res.render('singlePost', {
+				singlePost
+			});
 
 		});
 
@@ -27,10 +35,28 @@ function apiCtrl(req, res) {
 	// send back all posts
 	fs.readFile(db, (err, data) => {
 		if (err) throw err;
-		res.send( JSON.parse(data) );
+
+		let allPosts = JSON.parse(data);
+
+		if( isApi(req.path) ) {
+			res.send(allPosts);
+			return;
+		}
+
+		let link = req.originalUrl;
+
+		res.render('allPosts', {
+			allPosts,
+			link
+		});
+
 	});
 	
 }
+
+
+
+
 
 
 // send home page
@@ -67,13 +93,25 @@ function userPostsCtrl(req, res) {
 
 		// send user posts
 		getUserPosts.then( (data) => {
-	
-			if (data.length === 0) {
-				res.status(404).send(['No posts found of given user']);
+
+			if ( isApi(req.path) ) {
+
+				if (data.length <= 0) {
+					res.status(404).send(['No posts found of given user']);
+					return;
+				}
+
+				res.send(data);	
 				return;
 			}
-			
-			res.send(data); 
+
+			if (data.length <= 0) data = false;
+
+			res.render('userPosts', {
+				data
+			});
+				
+
 		});
 
 	}
@@ -83,8 +121,18 @@ function userPostsCtrl(req, res) {
 
 
 
+function isApi(reqestPath) {
+	
+	const regx = /^\/api\/.*/;
+
+	return reqestPath.match(regx) ? true : false;
+
+}
+
+
+
 module.exports = {
-	apiCtrl,
+	allPostsCtrl,
 	homeCtrl,
 	userPostsCtrl
 }

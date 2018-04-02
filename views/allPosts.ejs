@@ -1,0 +1,30 @@
+
+<%- include('./header.ejs'); %>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 mb-5 mt-5">
+      <h1>All Posts 😎</h1>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <% allPosts.forEach(function(post) { %>
+      <div class="col-md-6 mb-3">
+        <h1><%= post.title %></h1>
+        <p>User id: <%= post.userId %></p>
+        <p><%= post.body %></p>
+        <a href=<%= link + post.id %> >
+          <button class="btn btn-primary">View Post</button>
+        </a>
+      </div>
+    <% }); %>
+  </div>
+</div>
+
+
+</body>
+</html>

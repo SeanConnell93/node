@@ -1,7 +1,5 @@
 'use strict';
 
-var _https = require('https');
-
 var express = require('express');
 var app = express();
 
@@ -16,9 +14,15 @@ function apiCtrl(req, res) {
 
 		fs.readFile(db, function (err, data) {
 			if (err) throw err;
-			var post = JSON.parse(data)[req.params.post];
-			res.send(post);
+			var posts = JSON.parse(data);
+
+			var singlePost = posts.find(function (post) {
+				return post.id === Number(req.params.post);
+			});
+
+			res.send(singlePost !== undefined ? singlePost : 'Not Found');
 		});
+
 		return;
 	}
 
@@ -29,37 +33,46 @@ function apiCtrl(req, res) {
 	});
 }
 
+// send home page
 function homeCtrl(req, res) {
 	var file = path.join(__dirname + '/public/index.html');
 	res.sendFile(file);
 }
 
+// get user posts
 function userPostsCtrl(req, res) {
 
 	// send back post number
 	if (req.params.id && Number(req.params.id)) {
 
-		var readData = fs.readFile(db, function (err, data) {
-			if (err) throw err;
+		// read db and sort posts by userId
+		var getUserPosts = new Promise(function (resolve, reject) {
 
-			var posts = JSON.parse(data);
+			fs.readFile(db, function (err, data) {
 
-			return posts;
+				if (err) throw err;
+				var posts = JSON.parse(data);
+				var userPosts = [];
+
+				var findPosts = posts.find(function (post) {
+					if (post.userId === Number(req.params.id)) userPosts.push(post);
+				});
+
+				resolve(userPosts);
+			});
 		});
 
-		readData.then(function (data) {
+		// send user posts
+		getUserPosts.then(function (data) {
 
-			var userPosts = [];
+			if (data.length === 0) {
+				res.status(404).send(['No posts found of given user']);
+				return;
+			}
 
-			var sortUserPosts = posts.find(function (post, i) {
-
-				if (post.userId === Number(req.params.id)) userPosts.push(post);
+			res.render('index', {
+				data: data
 			});
-
-			return userPosts;
-		}).then(function (data) {
-
-			res.send(data);
 		});
 	}
 }

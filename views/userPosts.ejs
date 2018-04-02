@@ -1,0 +1,52 @@
+
+<%- include('./header.ejs'); %>
+
+<div class="container">
+
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <a href="/">
+          <button class="btn">Home</button>
+        </a>
+      </div>
+    </div>
+
+    <% if(data) { %>
+
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <h1>All posts by user <%= data[0].userId %> 👱🏻 🐕</h1>
+        </div>
+      </div>
+      
+      <div class="row">
+        <% data.forEach( function(post) { %>
+          <div class="col-md-6 mb-3">
+            <h1>
+              <%- post.title %>
+            </h1>
+            <p>User id:
+              <%- post.userId %>
+            </p>
+            <p>
+              <%- post.body %>
+            </p>
+            <a href=<%='/' + post.userId %>
+              <button class="btn btn-outline-primary">View Post</button>
+            </a>
+          </div>
+          <% }); %>
+      </div>
+
+    <% } else { %>
+
+      <h1>User profile doesn't exist 😭</h1>
+
+    <% } %>
+
+</div>
+
+
+
+</body>
+</html>

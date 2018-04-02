@@ -9,11 +9,11 @@ const routeCtrl = require('./routesCtrl');
 
 
 
-routes.get('/', routeCtrl.homeCtrl);
 
-routes.get('/api/:post?', routeCtrl.apiCtrl);
+routes.get(['/api/:post?', '/:post?'], routeCtrl.allPostsCtrl);
 
-routes.get('/api/user/:id', routeCtrl.userPostsCtrl);
+routes.get(['/api/user/:id', '/user/:id'], routeCtrl.userPostsCtrl);
+
 
 
 

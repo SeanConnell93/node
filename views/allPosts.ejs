@@ -1,5 +1,5 @@
 
-<%- include('./header.ejs'); %>
+<%- include('./partials/header.ejs'); %>
 
 
 <div class="container">
@@ -17,7 +17,7 @@
         <h1><%= post.title %></h1>
         <p>User id: <%= post.userId %></p>
         <p><%= post.body %></p>
-        <a href=<%= link + post.id %> >
+        <a href=<%= '/post/' + post.id %> >
           <button class="btn btn-primary">View Post</button>
         </a>
       </div>
@@ -26,5 +26,5 @@
 </div>
 
 
-</body>
-</html>
+
+<%- include('./partials/footer.ejs') %>

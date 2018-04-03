@@ -1,15 +1,9 @@
 
-<%- include('./header.ejs'); %>
+<%- include('./partials/header.ejs'); %>
 
   <div class="container">
 
-  <div class="row">
-    <div class="col-md-6 mb-4">
-      <a href="/">
-        <button class="btn">Home</button>
-      </a>
-    </div>
-  </div>
+  <%- include('./partials/nav.ejs') %>
 
 
 <% if(singlePost) { %>
@@ -25,7 +19,7 @@
   <div class="row">
     <div class="col-md-10">
       <h5>View all posts from this user</h5>
-      <a href=<%= 'user/' + singlePost.userId %>
+      <a href=<%= '/post/user/' + singlePost.userId %>
         <button class="btn btn-outline-primary">User Posts</button>
       </a>
     </div>
@@ -43,6 +37,9 @@
 <% } %>
 
 </div>
+
+
+
 
 
 

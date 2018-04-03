@@ -4,13 +4,15 @@ const app = express();
 const path = require('path');
 
 // middleware
-var logConnections = function (req, res, next) {
+var viewMiddleware = function (req, res, next) {
 
-    // console.log( req.hostname );
+    res.locals.pageTitle = false;
     
     next();
 };
-app.use('/', logConnections);
+app.use('/', viewMiddleware);
+
+
 
 
 // set template engine

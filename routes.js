@@ -4,16 +4,17 @@ const app = express();
 const routes = express.Router();
 
 // all route controllers
-const routeCtrl = require('./routesCtrl');
+const routeCtrl = require('./routesCtrls');
 
 
+routes.get('/', (req, res) => {
+  res.render('index');
+});
 
 
+routes.get(['/api/post/:post?', '/post/:post?'], routeCtrl.allPostsCtrl);
 
-routes.get(['/api/:post?', '/:post?'], routeCtrl.allPostsCtrl);
-
-routes.get(['/api/user/:id', '/user/:id'], routeCtrl.userPostsCtrl);
-
+routes.get(['/api/post/user/:id', '/post/user/:id'], routeCtrl.userPostsCtrl);
 
 
 
